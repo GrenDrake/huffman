@@ -170,8 +170,8 @@ public:
 	void buildTree();
 	void dumpTree() const;
 
+private:
 	HuffmanNode *root;
-
 	std::map<int,int> charFrequency;
 };
 
