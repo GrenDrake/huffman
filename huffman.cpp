@@ -59,7 +59,7 @@ void HuffmanTable::addMinFrequencies() {
 }
 
 void HuffmanTable::dumpFrequencies() const {
-	std::map<int, int> reverseMap;
+	std::multimap<int, int> reverseMap;
 	for (const auto &i : charFrequency) {
 		reverseMap.insert(std::make_pair(i.second, i.first));
 	}
