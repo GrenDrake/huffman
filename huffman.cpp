@@ -5,6 +5,7 @@
 #include <queue>
 #include <vector>
 #include <string>
+#include <sstream>
 #include <cstring>
 #include <cstdint>
 
@@ -43,7 +44,11 @@ void HuffmanBranch::dump(std::string s) const {
 void HuffmanTable::addFrequencies(const char *text) {
 	size_t i = 0;
 	do {
-		++charFrequency[text[i]];
+		int codePoint = text[i];
+		if (codePoint == 0) {
+			codePoint = 1;
+		}
+		++charFrequency[codePoint];
 	} while (text[i++]);
 }
 
@@ -77,7 +82,7 @@ void HuffmanTable::dumpFrequencies() const {
 void HuffmanTable::buildTree() {
 	std::priority_queue<HuffmanNode*, std::vector<HuffmanNode*>, HuffmanNodeCompareWeights> q;
 	for (const auto &i : charFrequency) {
-		if (i.first == 0) {
+		if (i.first == 0 || i.first == 1) {
 			q.push(new HuffmanLeafEnd(i.second));
 		} else {
 			q.push(new HuffmanLeafChar(i.first,i.second));
@@ -110,7 +115,7 @@ std::vector<bool> HuffmanTable::encode(const char *text) const {
 	size_t length = strlen(text) + 1;
 
 	while (pos < length) {
-		char c = text[pos];
+		int c = text[pos];
 		if (c == 0) c = 1;
 
 		HuffmanNode *node = root;
@@ -123,9 +128,19 @@ std::vector<bool> HuffmanTable::encode(const char *text) const {
 			if (branch->getLeft()->contains(c)) {
 				node = branch->getLeft();
 				result.push_back(false);
-			} else {
+			} else if (branch->getRight()->contains(c)) {
 				node = branch->getRight();
 				result.push_back(true);
+			} else {
+				std::stringstream ss;
+				ss << "Character ";
+				if (c >= 0x20 && c != 0x7F) {
+					ss << '\'' << static_cast<char>(c) << "' (" << std::hex << "0x" << c << ") ";
+				} else {
+					ss << std::hex << "0x" << c << ' ';
+				}
+				ss << "Not in Huffman Table";
+				throw HuffmanException(ss.str());
 			}
 		}
 

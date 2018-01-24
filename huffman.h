@@ -12,9 +12,7 @@ public:
     { }
 
     virtual const char* what() const noexcept override {
-        std::string fullMessage = "HUFFMAN ERROR: ";
-        fullMessage += message;
-        return fullMessage.c_str();
+        return message.c_str();
     }
 private:
     std::string message;
@@ -99,13 +97,13 @@ public:
 	{ }
 
 	virtual const std::string getName() const {
-		return "\1";
+		return "\x1\0";
 	}
 	virtual void dump(std::string s) const {
 //		std::cout << s << ": NUL\n";
 	}
 	virtual bool contains(int character) const {
-		return (character == 0);
+		return character == 0 || character == 1;
 	}
 };
 

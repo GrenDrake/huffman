@@ -25,12 +25,19 @@ int main() {
 	// ht.dumpFrequencies();
 	// ht.dumpTree();
 
+
+    std::vector<bool> encodedString;
     /* ***********************************************************************
      * Test Encoding String
      */
 	const char *toEncode = "towered over the prelate";
     std::cout << "Encoding test string: \"" << toEncode << "\"\n\n";
-	encodedString = ht.encode(toEncode);
+    try {
+    	encodedString = ht.encode(toEncode);
+    } catch (HuffmanException &e) {
+        std::cerr << "ERROR: " << e.what() << "\n";
+        return 1;
+    }
 
     std::cout << "Encoded string data:\n";
     int counter = 0;
@@ -58,8 +65,13 @@ int main() {
     /* ***********************************************************************
      * Test Decoding String
      */
-	std::string out = ht.decode(encodedString);
-	std::cout << "Decoded string text: " << out << "\n\n";
+    try {
+    	std::string out = ht.decode(encodedString);
+    	std::cout << "Decoded string text: " << out << "\n\n";
+    } catch (HuffmanException &e) {
+        std::cerr << "ERROR: " << e.what() << "\n";
+        return 1;
+    }
 
 	// encodedString.clear();
 	// const char *bitStr = "1110 101 01100 01100 0101 1001100 10011111";
