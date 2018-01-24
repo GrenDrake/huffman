@@ -17,7 +17,7 @@ int main() {
     /* ***********************************************************************
      * Test Encoding String
      */
-	const char *toEncode = "towered 久over the prelate";
+	const char *toEncode = "towered over the prelate";
     std::cout << "Encoding test string: \"" << toEncode << "\"\n\n";
 	encodedString = ht.encode(toEncode);
 
