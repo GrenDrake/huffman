@@ -12,7 +12,11 @@ int main() {
 //	ht.addMinFrequencies();
 	ht.buildTree();
 
-    std::vector<bool> encodedString;
+    /* ***********************************************************************
+     * Dump Huffman Table Data
+     */
+	// ht.dumpFrequencies();
+	// ht.dumpTree();
 
     /* ***********************************************************************
      * Test Encoding String
@@ -61,10 +65,5 @@ int main() {
 	// out = ht.decode(encodedString);
 	// std::cout << "Result: " << out << "\n\n";
 
-    /* ***********************************************************************
-     * Dump Huffman Table Data
-     */
-	ht.dumpFrequencies();
-	// ht.dumpTree();
 	return 0;
 }
