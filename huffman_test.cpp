@@ -3,12 +3,19 @@
 #include "huffman.h"
 
 int main() {
-	const char *testStr = "The manor-house of the Prelate's Servant Randolph was a massive edifice of stone and wood with towers that, well, towered over the surrounding countryside. Within were three above-ground levels and even more below. Despite the \"name\", it was not where the Prelate's Servant Randolph lived, but rather was home to the bureaucracy that lay behind the servant's power.\n";
-	const char *testStr2 = "母乳 布久思毛與 美夫君志持 此岳尓 菜採須兒 家吉閑名 告<紗>根 虚見津 山跡乃國者 押奈戸手 吾許曽居 師<吉>名倍手 吾己曽座 我<許>背齒 告目 家呼毛名In addition to the countless offices and records-rooms, it was also home to much of the artistic wealth that the Prelate's Servant had acquired. There was so much of this that it was crammed in almost carelessly wherever space could be found. Public viewing was allowed during restricted hours, but few wanted to dare the volatile moods of one of the prelate's governors.\n";
 	HuffmanTable ht;
+    const char *inputStrings[] = {
+        "The manor-house of the Prelate's Servant Randolph was a massive edifice of stone and wood with towers that, well, towered over the surrounding countryside. Within were three above-ground levels and even more below. Despite the \"name\", it was not where the Prelate's Servant Randolph lived, but rather was home to the bureaucracy that lay behind the servant's power.\n",
+        "In addition to the countless offices and records-rooms, it was also home to much of the artistic wealth that the Prelate's Servant had acquired. There was so much of this that it was crammed in almost carelessly wherever space could be found. Public viewing was allowed during restricted hours, but few wanted to dare the volatile moods of one of the prelate's governors.\n",
+        nullptr
+    };
 
-	ht.addFrequencies(testStr);
-	ht.addFrequencies(testStr2);
+    /* ***********************************************************************
+     * Build (and optionally dump) Huffman Tables
+     */
+    for (int i = 0; inputStrings[i] != nullptr; ++i) {
+	    ht.addFrequencies(inputStrings[i]);
+    }
 //	ht.addMinFrequencies();
 	ht.buildTree();
 
