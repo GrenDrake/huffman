@@ -5,6 +5,9 @@
 #include <string>
 #include <vector>
 
+/**
+ * General exception class for exceptions that occur within this library.
+ */
 class HuffmanException : public std::runtime_error {
 public:
     HuffmanException(const std::string &message)
@@ -18,6 +21,9 @@ private:
     std::string message;
 };
 
+/**
+ * Base class for all nodes that occur in the Huffman table.
+ */
 class HuffmanNode {
 public:
 	enum NodeType {
@@ -62,6 +68,9 @@ public:
 	}
 };
 
+/**
+ * Leaf-node for Huffman table repersenting single characters.
+ */
 class HuffmanLeafChar : public HuffmanNode {
 public:
 	explicit HuffmanLeafChar(int character = 0, int weight = 0)
@@ -90,6 +99,9 @@ private:
 	int _character;
 };
 
+/**
+ * Leaf-node for Huffman table repersenting the end of a string.
+ */
 class HuffmanLeafEnd : public HuffmanNode {
 public:
 	explicit HuffmanLeafEnd(int weight = 0)
@@ -107,6 +119,9 @@ public:
 	}
 };
 
+/**
+ * General branch node for Huffman table.
+ */
 class HuffmanBranch : public HuffmanNode {
 public:
 	HuffmanBranch(HuffmanNode *left, HuffmanNode *right)
@@ -157,17 +172,61 @@ private:
 	std::string _name;
 };
 
-
+/**
+ * Main class for the Huffman table. Handles building the table as well as
+ * encoding and decoding strings.
+ */
 class HuffmanTable {
 public:
-
+    /**
+     * Encode a string into a block of binary data.
+     * @param text The text to encode.
+     * @return The encoded version of the string.
+     * @throw HuffmanException Thrown if an error occurs during the encoding
+     *                         process.
+     */
 	std::vector<bool> encode(const char *text) const;
+
+    /**
+     * Decode an encoded string back into a block of text.
+     * @param data The encoded string to decode.
+     * @return The unencoded version of the string.
+     * @throw HuffmanException Thrown if an error occurs during the decoding
+     *                         process.
+     */
 	std::string decode(const std::vector<bool> &data) const;
 
+    /**
+     * Use the provided text to add to the frequencies data used to build the
+     * Huffman table. This does not actually build the table; see buildTree()
+     * for that.
+     * @param  text  The text to add the frequencies of.
+     */
 	void addFrequencies(const char *text);
+
+    /**
+     * Makes sure every standard ascii character has a frequency of at least
+     * one. This will make sure that the encoder can deal with any possible
+     * string, even if the input data for the frequency table did not contain
+     * some characters.
+     */
 	void addMinFrequencies();
+
+    /**
+     * Dumps a table of all current character frequencies to std::cout.
+     */
 	void dumpFrequencies() const;
+
+    /**
+     * Use previously gathered frequency data to build the Huffman
+     * encoding/decoding tree.
+     */
 	void buildTree();
+
+    /**
+     * Dumps a Graphviz DOT file containing a graph of the Huffman encoding
+     * tree to std::cout
+     */
 	void dumpTree() const;
 
 private:

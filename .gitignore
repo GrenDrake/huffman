@@ -1,3 +1,4 @@
 huffman
 *.o
 .DS_Store
+docs
