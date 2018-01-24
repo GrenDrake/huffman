@@ -73,16 +73,5 @@ int main() {
         return 1;
     }
 
-	// encodedString.clear();
-	// const char *bitStr = "1110 101 01100 01100 0101 1001100 10011111";
-	// for (size_t i = 0; bitStr[i] != 0; ++i) {
-	// 	if (bitStr[i] == '1')
-	// 		encodedString.push_back(1);
-	// 	if (bitStr[i] == '0')
-	// 		encodedString.push_back(0);
-	// }
-	// out = ht.decode(encodedString);
-	// std::cout << "Result: " << out << "\n\n";
-
 	return 0;
 }
