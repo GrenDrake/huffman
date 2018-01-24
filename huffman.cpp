@@ -67,9 +67,8 @@ void HuffmanTable::dumpFrequencies() const {
 	std::cout << std::left << std::setw(8) << "CHAR" << " FREQUENCY ASCII\n";
 	for (const auto &i : reverseMap) {
 		std::cout << std::setw(8) << i.second << " " << std::setw(9) << i.first;
-
-		if (i.first > 32 && i.first < 128) {
-			std::cout << " " << static_cast<char>(i.first);
+		if (i.second >= 0x20 && i.second != 0x7F) {
+			std::cout << " '" << i.second << '\'';
 		}
 		std::cout << "\n";
 	}
