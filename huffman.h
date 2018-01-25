@@ -158,7 +158,7 @@ public:
 		return _name;
 	}
 	virtual bool contains(int character) const {
-		return (_name.find_first_of(character) != std::string::npos);
+		return (_left && _left->contains(character)) || (_right && _right->contains(character));
 	}
 private:
 	HuffmanNode *_left, *_right;
