@@ -2,3 +2,4 @@ huffman
 *.o
 .DS_Store
 docs
+huffman_dump.txt

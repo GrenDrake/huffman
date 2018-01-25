@@ -1,3 +1,4 @@
+#include <fstream>
 #include <iostream>
 
 #include "huffman.h"
@@ -22,8 +23,10 @@ int main() {
     /* ***********************************************************************
      * Dump Huffman Table Data
      */
-	// ht.dumpFrequencies();
-	// ht.dumpTree();
+    std::ofstream dumpFile("huffman_dump.txt");
+	ht.dumpFrequencies(dumpFile);
+    dumpFile << '\n';
+	ht.dumpTree(dumpFile);
 
 
     std::vector<bool> encodedString;

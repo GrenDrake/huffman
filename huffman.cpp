@@ -13,50 +13,50 @@
 #include "huffman.h"
 
 
-void HuffmanTable::dumpTree() const {
+void HuffmanTable::dumpTree(std::ostream &out) const {
 	if (!root) {
 		throw HuffmanException("Tried to dump non-existant tree");
 	}
-	std::cout << "HUFFMAN TREE DATA DUMP\n    BIT SEQUENCE  CHARACTER\n";
-	root->dump("");
+	out << "HUFFMAN TREE DATA DUMP\n    BIT SEQUENCE  CHARACTER\n";
+	root->dump(out, "");
 }
 
-void HuffmanBranch::dump(std::string s) const {
+void HuffmanBranch::dump(std::ostream &out, std::string s) const {
 	if (_left) {
-		_left->dump(s + "0");
+		_left->dump(out, s + "0");
 	}
 	if (_right) {
-		_right->dump(s + "1");
+		_right->dump(out, s + "1");
 	}
 }
 
-void HuffmanLeafChar::dump(std::string s) const {
-	std::cout << std::setw(16) << s << ": ";
+void HuffmanLeafChar::dump(std::ostream &out, std::string s) const {
+	out << std::setw(16) << s << ": ";
 	if (_character >= 0x20 && _character != 0x1F) {
-		std::cout << '\'' << (char)_character << "' (0x" << std::hex << std::uppercase << _character << std::dec << ')';
+		out << '\'' << (char)_character << "' (0x" << std::hex << std::uppercase << _character << std::dec << ')';
 	} else {
-		std::cout << "0x" << std::hex << _character << std::dec;
+		out << "0x" << std::hex << _character << std::dec;
 	}
-	std::cout << '\n';
+	out << '\n';
 }
 
-void HuffmanLeafEnd::dump(std::string s) const {
-		std::cout << std::setw(16) << s << ": NUL\n";
+void HuffmanLeafEnd::dump(std::ostream &out, std::string s) const {
+	out << std::setw(16) << s << ": NUL\n";
 }
 
-void HuffmanTable::dumpFrequencies() const {
+void HuffmanTable::dumpFrequencies(std::ostream &out) const {
 	std::multimap<int, int> reverseMap;
 	for (const auto &i : charFrequency) {
 		reverseMap.insert(std::make_pair(i.second, i.first));
 	}
 
-	std::cout << std::left << std::setw(8) << "CHAR" << " FREQUENCY ASCII\n";
+	out << std::left << std::setw(8) << "CHAR" << " FREQUENCY ASCII\n";
 	for (const auto &i : reverseMap) {
-		std::cout << std::setw(8) << i.second << " " << std::setw(9) << i.first;
+		out << std::setw(8) << i.second << " " << std::setw(9) << i.first << ' ';
 		if (i.second >= 0x20 && i.second != 0x7F) {
-			std::cout << " '" << i.second << '\'';
+			out << '\'' << (char)i.second << "' ";
 		}
-		std::cout << "\n";
+		out << "0x" << std::hex << std::uppercase << i.second << std::dec << "\n";
 	}
 }
 

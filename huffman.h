@@ -1,6 +1,7 @@
 #ifndef HUFFMAN_H
 #define HUFFMAN_H
 
+#include <iosfwd>
 #include <map>
 #include <string>
 #include <vector>
@@ -53,7 +54,7 @@ public:
 		_type = type;
 	}
 
-	virtual void dump(std::string s) const = 0;
+	virtual void dump(std::ostream &out, std::string s) const = 0;
 	virtual bool contains(int character) const = 0;
 private:
 	int _weight;
@@ -80,7 +81,7 @@ public:
 		return (character == _character);
 	}
 
-	virtual void dump(std::string s) const;
+	virtual void dump(std::ostream &out, std::string s) const;
 private:
 	int _character;
 };
@@ -97,7 +98,7 @@ public:
 	virtual bool contains(int character) const {
 		return character == 0 || character == 1;
 	}
-	virtual void dump(std::string s) const;
+	virtual void dump(std::ostream &out, std::string s) const;
 };
 
 /**
@@ -136,7 +137,7 @@ public:
 		return _left;
 	}
 
-	virtual void dump(std::string s) const;
+	virtual void dump(std::ostream &out, std::string s) const;
 
 	virtual bool contains(int character) const {
 		return (_left && _left->contains(character)) || (_right && _right->contains(character));
@@ -187,8 +188,9 @@ public:
 
     /**
      * Dumps a table of all current character frequencies to std::cout.
+	 * @param out The output stream to dump the character frequencies to.
      */
-	void dumpFrequencies() const;
+	void dumpFrequencies(std::ostream &out) const;
 
     /**
      * Use previously gathered frequency data to build the Huffman
@@ -199,8 +201,9 @@ public:
     /**
      * Dumps a Graphviz DOT file containing a graph of the Huffman encoding
      * tree to std::cout
+	 * @param out The output stream to dump the Huffman tree data to.
      */
-	void dumpTree() const;
+	void dumpTree(std::ostream &out) const;
 
 private:
 	HuffmanNode *root;
