@@ -67,7 +67,7 @@ void HuffmanTable::dumpFrequencies(std::ostream &out) const {
  * Bodies for methods for manipulating the Huffman tree
  */
 
-void HuffmanTable::addFrequencies(const char *text) {
+void HuffmanTable::addFrequencies(const std::string &text) {
 	size_t i = 0;
 	do {
 		int codePoint = text[i];
@@ -120,10 +120,10 @@ void HuffmanTable::buildTree() {
  * Bodies for encoding/decoding method bodies
  */
 
-std::vector<bool> HuffmanTable::encode(const char *text) const {
+std::vector<bool> HuffmanTable::encode(const std::string &text) const {
 	std::vector<bool> result;
 	size_t pos = 0;
-	size_t length = strlen(text) + 1;
+	size_t length = text.size() + 1;
 
 	while (pos < length) {
 		int c = text[pos];

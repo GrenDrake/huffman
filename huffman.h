@@ -159,7 +159,7 @@ public:
      * @throw HuffmanException Thrown if an error occurs during the encoding
      *                         process.
      */
-	std::vector<bool> encode(const char *text) const;
+	std::vector<bool> encode(const std::string &text) const;
 
     /**
      * Decode an encoded string back into a block of text.
@@ -176,7 +176,7 @@ public:
      * for that.
      * @param  text  The text to add the frequencies of.
      */
-	void addFrequencies(const char *text);
+	void addFrequencies(const std::string &text);
 
     /**
      * Makes sure every standard ascii character has a frequency of at least
