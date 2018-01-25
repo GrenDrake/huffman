@@ -8,6 +8,8 @@ int main() {
     const char *inputStrings[] = {
         "The manor-house of the Prelate's Servant Randolph was a massive edifice of stone and wood with towers that, well, towered over the surrounding countryside. Within were three above-ground levels and even more below. Despite the \"name\", it was not where the Prelate's Servant Randolph lived, but rather was home to the bureaucracy that lay behind the servant's power.\n",
         "In addition to the countless offices and records-rooms, it was also home to much of the artistic wealth that the Prelate's Servant had acquired. There was so much of this that it was crammed in almost carelessly wherever space could be found. Public viewing was allowed during restricted hours, but few wanted to dare the volatile moods of one of the prelate's governors.\n",
+        // Japanese text from http://generator.lorem-ipsum.info/_japanese
+        "引阜ハモ展勝ヒヨユト奪手き人年ヱレオル毎東フぐか迎作69治全ょっ載提ほべ問窓ヲヱ現可さづ意免話執折トはラ。新トハリル観他タソホメ光20感ょどひれ渡情1全べ勲体囲ト軽迫ゃ面長ネウ間広ゅんがと題定ま一公のょざ重64県乗歌規4提ノミサ和風リ税就僚弱招て。爆購テノ正本ゆる果政ナミフネ職読ス断確無経ゅと針激ばずめ戦天柔コシソ東考どほびル内初いリト概最ぱぜ調的ハフ区助エ転拘肌陶トを。",
         nullptr
     };
 
@@ -33,7 +35,7 @@ int main() {
     /* ***********************************************************************
      * Test Encoding String
      */
-	const char *toEncode = "towered over the prelate";
+	const char *toEncode = "towered over フぐ the prelate";
     std::cout << "Encoding test string: \"" << toEncode << "\"\n\n";
     try {
     	encodedString = ht.encode(toEncode);

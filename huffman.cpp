@@ -1,6 +1,7 @@
 #include <cstring>
 #include <fstream>
 #include <iomanip>
+#include <iterator>
 #include <map>
 #include <queue>
 #include <sstream>
@@ -10,6 +11,12 @@
 #include "utf8/utf8.h"
 #include "huffman.h"
 
+
+static std::string codePointToString(int codePoint) {
+	std::string result;
+	utf8::append(codePoint, std::back_inserter(result));
+	return result;
+}
 
 /* ***************************************************************************
  * Bodies for Huffman tree dumping methods
@@ -35,7 +42,7 @@ void HuffmanBranch::dump(std::ostream &out, std::string s) const {
 void HuffmanLeafChar::dump(std::ostream &out, std::string s) const {
 	out << std::setw(16) << s << ": ";
 	if (_character >= 0x20 && _character != 0x1F) {
-		out << '\'' << (char)_character << "' (0x" << std::hex << std::uppercase << _character << std::dec << ')';
+		out << '\'' << codePointToString(_character) << "' (0x" << std::hex << std::uppercase << _character << std::dec << ')';
 	} else {
 		out << "0x" << std::hex << _character << std::dec;
 	}
@@ -56,7 +63,7 @@ void HuffmanTable::dumpFrequencies(std::ostream &out) const {
 	for (const auto &i : reverseMap) {
 		out << std::setw(8) << i.second << " " << std::setw(9) << i.first << ' ';
 		if (i.second >= 0x20 && i.second != 0x7F) {
-			out << '\'' << (char)i.second << "' ";
+			out << '\'' << codePointToString(i.second) << "' ";
 		}
 		out << "0x" << std::hex << std::uppercase << i.second << std::dec << "\n";
 	}
@@ -68,11 +75,12 @@ void HuffmanTable::dumpFrequencies(std::ostream &out) const {
  */
 
 void HuffmanTable::addFrequencies(const std::string &text) {
-	size_t i = 0;
+	std::string::const_iterator iter = text.begin();
 	do {
-		int codePoint = text[i];
+		int codePoint = utf8::next(iter, text.end());
 		++charFrequency[codePoint];
-	} while (text[i++]);
+	} while (iter != text.end());
+	++charFrequency[0];
 }
 
 void HuffmanTable::addMinFrequencies() {
@@ -122,11 +130,13 @@ void HuffmanTable::buildTree() {
 
 std::vector<bool> HuffmanTable::encode(const std::string &text) const {
 	std::vector<bool> result;
-	size_t pos = 0;
-	size_t length = text.size() + 1;
+	std::string::const_iterator iter = text.begin();
 
-	while (pos < length) {
-		int c = text[pos];
+	while (true) {
+		int c = 0;
+		if (iter != text.end()) {
+			c = utf8::next(iter, text.end());
+		}
 
 		HuffmanNode *node = root;
 		while (node->getType() == HuffmanNode::Branch) {
@@ -154,9 +164,10 @@ std::vector<bool> HuffmanTable::encode(const std::string &text) const {
 			}
 		}
 
-		++pos;
+		if (c == 0) {
+			return result;
+		}
 	}
-	return result;
 }
 
 std::string HuffmanTable::decode(const std::vector<bool> &data) const {
@@ -184,7 +195,7 @@ std::string HuffmanTable::decode(const std::vector<bool> &data) const {
 				if (!leaf) {
 					throw HuffmanException("Malformed Tree in Decoding");
 				}
-				result.append(1, leaf->getCharacter());
+				result += codePointToString(leaf->getCharacter());
 				break; }
 			case HuffmanNode::End:
 				return result;
