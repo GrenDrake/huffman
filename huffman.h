@@ -76,12 +76,11 @@ public:
 		_character = character;
 	}
 
-	virtual void dump(std::string s) const {
-//		std::cout << s << ": " << (char)_character << " (" << _character << ")\n";
-	}
 	virtual bool contains(int character) const {
 		return (character == _character);
 	}
+
+	virtual void dump(std::string s) const;
 private:
 	int _character;
 };
@@ -95,12 +94,10 @@ public:
 	: HuffmanNode(weight, HuffmanNode::End)
 	{ }
 
-	virtual void dump(std::string s) const {
-//		std::cout << s << ": NUL\n";
-	}
 	virtual bool contains(int character) const {
 		return character == 0 || character == 1;
 	}
+	virtual void dump(std::string s) const;
 };
 
 /**

@@ -12,34 +12,53 @@
 #include "utf8/utf8.h"
 #include "huffman.h"
 
-static std::string sanitize(const std::string &s) {
-	std::string result;
-	for (size_t i = 0; i < s.size(); ++i) {
-		switch(s[i]) {
-			case 0:	 result += "NUL";	break;
-			case 10:	result += "\\n";	break;
-			case 13:	result += "\\r";	break;
-			case ' ':	result += "_";	break;
-			case '"':   result += "\\\"";	break;
-			default:	result += s[i];
-		}
-	}
-	return result;
-}
 
+void HuffmanTable::dumpTree() const {
+	if (!root) {
+		throw HuffmanException("Tried to dump non-existant tree");
+	}
+	std::cout << "HUFFMAN TREE DATA DUMP\n    BIT SEQUENCE  CHARACTER\n";
+	root->dump("");
+}
 
 void HuffmanBranch::dump(std::string s) const {
 	if (_left) {
-		// std::cout << "\t\"" << sanitize(getName()) << "\" -> \"" << sanitize(_left->getName()) << "\" [label=\"Left\"];\n";
-		_left->dump(s+"0");
+		_left->dump(s + "0");
 	}
 	if (_right) {
-		// std::cout << "\t\"" << sanitize(getName()) << "\" -> \"" << sanitize(_right->getName()) << "\" [label=\"Right\"];\n";
-		_right->dump(s+"1");
+		_right->dump(s + "1");
 	}
 }
 
+void HuffmanLeafChar::dump(std::string s) const {
+	std::cout << std::setw(16) << s << ": ";
+	if (_character >= 0x20 && _character != 0x1F) {
+		std::cout << '\'' << (char)_character << "' (0x" << std::hex << std::uppercase << _character << std::dec << ')';
+	} else {
+		std::cout << "0x" << std::hex << _character << std::dec;
+	}
+	std::cout << '\n';
+}
 
+void HuffmanLeafEnd::dump(std::string s) const {
+		std::cout << std::setw(16) << s << ": NUL\n";
+}
+
+void HuffmanTable::dumpFrequencies() const {
+	std::multimap<int, int> reverseMap;
+	for (const auto &i : charFrequency) {
+		reverseMap.insert(std::make_pair(i.second, i.first));
+	}
+
+	std::cout << std::left << std::setw(8) << "CHAR" << " FREQUENCY ASCII\n";
+	for (const auto &i : reverseMap) {
+		std::cout << std::setw(8) << i.second << " " << std::setw(9) << i.first;
+		if (i.second >= 0x20 && i.second != 0x7F) {
+			std::cout << " '" << i.second << '\'';
+		}
+		std::cout << "\n";
+	}
+}
 
 void HuffmanTable::addFrequencies(const char *text) {
 	size_t i = 0;
@@ -60,22 +79,6 @@ void HuffmanTable::addMinFrequencies() {
 	}
 	if (charFrequency[10] == 0) {
 		charFrequency[10] = 1;
-	}
-}
-
-void HuffmanTable::dumpFrequencies() const {
-	std::multimap<int, int> reverseMap;
-	for (const auto &i : charFrequency) {
-		reverseMap.insert(std::make_pair(i.second, i.first));
-	}
-
-	std::cout << std::left << std::setw(8) << "CHAR" << " FREQUENCY ASCII\n";
-	for (const auto &i : reverseMap) {
-		std::cout << std::setw(8) << i.second << " " << std::setw(9) << i.first;
-		if (i.second >= 0x20 && i.second != 0x7F) {
-			std::cout << " '" << i.second << '\'';
-		}
-		std::cout << "\n";
 	}
 }
 
@@ -108,13 +111,6 @@ void HuffmanTable::buildTree() {
 	root = q.top();
 }
 
-void HuffmanTable::dumpTree() const {
-	if (root) {
-		std::cout << "digraph HuffmanTable {\n";
-		root->dump("");
-		std::cout << "}\n";
-	}
-}
 
 std::vector<bool> HuffmanTable::encode(const char *text) const {
 	std::vector<bool> result;
