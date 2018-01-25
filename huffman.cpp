@@ -30,11 +30,11 @@ static std::string sanitize(const std::string &s) {
 
 void HuffmanBranch::dump(std::string s) const {
 	if (_left) {
-		std::cout << "\t\"" << sanitize(getName()) << "\" -> \"" << sanitize(_left->getName()) << "\" [label=\"Left\"];\n";
+		// std::cout << "\t\"" << sanitize(getName()) << "\" -> \"" << sanitize(_left->getName()) << "\" [label=\"Left\"];\n";
 		_left->dump(s+"0");
 	}
 	if (_right) {
-		std::cout << "\t\"" << sanitize(getName()) << "\" -> \"" << sanitize(_right->getName()) << "\" [label=\"Right\"];\n";
+		// std::cout << "\t\"" << sanitize(getName()) << "\" -> \"" << sanitize(_right->getName()) << "\" [label=\"Right\"];\n";
 		_right->dump(s+"1");
 	}
 }

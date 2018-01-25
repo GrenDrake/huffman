@@ -53,7 +53,6 @@ public:
 		_type = type;
 	}
 
-	virtual const std::string getName() const = 0;
 	virtual void dump(std::string s) const = 0;
 	virtual bool contains(int character) const = 0;
 private:
@@ -77,11 +76,6 @@ public:
 		_character = character;
 	}
 
-	virtual const std::string getName() const {
-		std::string s;
-		s += _character;
-		return s;
-	}
 	virtual void dump(std::string s) const {
 //		std::cout << s << ": " << (char)_character << " (" << _character << ")\n";
 	}
@@ -101,9 +95,6 @@ public:
 	: HuffmanNode(weight, HuffmanNode::End)
 	{ }
 
-	virtual const std::string getName() const {
-		return "\x1\0";
-	}
 	virtual void dump(std::string s) const {
 //		std::cout << s << ": NUL\n";
 	}
@@ -121,7 +112,6 @@ public:
 	 : HuffmanNode(0, HuffmanNode::Branch), _left(left), _right(right)
 	{
 		setWeight(_left->getWeight() + _right->getWeight());
-		setName(_left->getName() + _right->getName());
 	}
 
 	HuffmanNode* nextNode(bool right) {
@@ -151,18 +141,11 @@ public:
 
 	virtual void dump(std::string s) const;
 
-	void setName(const std::string &name) {
-		_name = name;
-	}
-	virtual const std::string getName() const {
-		return _name;
-	}
 	virtual bool contains(int character) const {
 		return (_left && _left->contains(character)) || (_right && _right->contains(character));
 	}
 private:
 	HuffmanNode *_left, *_right;
-	std::string _name;
 };
 
 /**
