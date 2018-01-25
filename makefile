@@ -3,3 +3,8 @@ OBJS=huffman.o huffman_test.o
 
 huffman: $(OBJS)
 	$(CXX) $(OBJS) -o huffman
+
+clean:
+	$(RM) $(OBJS) huffman
+
+.PHONY: clean
