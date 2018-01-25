@@ -1,13 +1,11 @@
-#include <map>
+#include <cstring>
 #include <fstream>
 #include <iomanip>
-#include <iostream>
+#include <map>
 #include <queue>
-#include <vector>
-#include <string>
 #include <sstream>
-#include <cstring>
-#include <cstdint>
+#include <string>
+#include <vector>
 
 #include "utf8/utf8.h"
 #include "huffman.h"
