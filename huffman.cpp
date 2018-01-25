@@ -79,6 +79,13 @@ void HuffmanTable::dumpFrequencies() const {
 	}
 }
 
+class HuffmanNodeCompareWeights {
+public:
+	bool operator()(const HuffmanNode *lhs, const HuffmanNode *rhs) {
+		// we want this sorted in reverse order, so we're using > rather than <
+		return (lhs->getWeight() > rhs->getWeight());
+	}
+};
 void HuffmanTable::buildTree() {
 	std::priority_queue<HuffmanNode*, std::vector<HuffmanNode*>, HuffmanNodeCompareWeights> q;
 	for (const auto &i : charFrequency) {

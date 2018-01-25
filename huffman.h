@@ -60,13 +60,6 @@ private:
 	int _weight;
 	NodeType _type;
 };
-class HuffmanNodeCompareWeights {
-public:
-	bool operator()(const HuffmanNode *lhs, const HuffmanNode *rhs) {
-		// we want this sorted in reverse order, so we're using > rather than <
-		return (lhs->getWeight() > rhs->getWeight());
-	}
-};
 
 /**
  * Leaf-node for Huffman table repersenting single characters.
