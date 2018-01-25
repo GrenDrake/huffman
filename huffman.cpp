@@ -71,9 +71,6 @@ void HuffmanTable::addFrequencies(const char *text) {
 	size_t i = 0;
 	do {
 		int codePoint = text[i];
-		if (codePoint == 0) {
-			codePoint = 1;
-		}
 		++charFrequency[codePoint];
 	} while (text[i++]);
 }
@@ -130,7 +127,6 @@ std::vector<bool> HuffmanTable::encode(const char *text) const {
 
 	while (pos < length) {
 		int c = text[pos];
-		if (c == 0) c = 1;
 
 		HuffmanNode *node = root;
 		while (node->getType() == HuffmanNode::Branch) {
