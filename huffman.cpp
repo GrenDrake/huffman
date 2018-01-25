@@ -11,6 +11,10 @@
 #include "huffman.h"
 
 
+/* ***************************************************************************
+ * Bodies for Huffman tree dumping methods
+ */
+
 void HuffmanTable::dumpTree(std::ostream &out) const {
 	if (!root) {
 		throw HuffmanException("Tried to dump non-existant tree");
@@ -57,6 +61,11 @@ void HuffmanTable::dumpFrequencies(std::ostream &out) const {
 		out << "0x" << std::hex << std::uppercase << i.second << std::dec << "\n";
 	}
 }
+
+
+/* ***************************************************************************
+ * Bodies for methods for manipulating the Huffman tree
+ */
 
 void HuffmanTable::addFrequencies(const char *text) {
 	size_t i = 0;
@@ -109,6 +118,10 @@ void HuffmanTable::buildTree() {
 	root = q.top();
 }
 
+
+/* ***************************************************************************
+ * Bodies for encoding/decoding method bodies
+ */
 
 std::vector<bool> HuffmanTable::encode(const char *text) const {
 	std::vector<bool> result;
